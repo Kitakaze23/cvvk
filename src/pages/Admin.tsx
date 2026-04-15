@@ -230,325 +230,317 @@ const Admin = () => {
   const projectsData = editData.projects || {};
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 glass border-b border-border/30 px-6 py-3 flex items-center justify-between">
-        <h1 className="font-display font-bold text-lg">
-          <span className="text-gradient">Admin Panel</span>
-        </h1>
-        <div className="flex items-center gap-3">
-          <a href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-            На сайт
-          </a>
-          <Button variant="ghost" size="sm" onClick={handleLogout}>
-            <LogOut className="w-4 h-4" />
-          </Button>
+    <div className="min-h-screen bg-background flex">
+      {/* LEFT SIDEBAR */}
+      <aside className="w-56 shrink-0 border-r border-border/30 glass sticky top-0 h-screen overflow-y-auto">
+        <div className="px-4 py-4 border-b border-border/30">
+          <h1 className="font-display font-bold text-lg">
+            <span className="text-gradient">Admin</span>
+          </h1>
         </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
-        {/* SECTION VISIBILITY */}
-        <SectionEditor title="👁 Видимость секций" section="section_visibility" saving={saving} onSave={saveSection}>
-          {[
-            { key: "hero", label: "🏠 Hero" },
-            { key: "impact", label: "📊 Impact" },
-            { key: "what_i_build", label: "🚀 What I Build" },
-            { key: "ai", label: "🤖 AI Experience" },
-            { key: "experience", label: "💼 Experience" },
-            { key: "skills", label: "🧠 Skills" },
-            { key: "industries", label: "🌍 Industries" },
-            { key: "projects", label: "📁 Projects" },
-            { key: "contact", label: "📬 Contact" },
-          ].map(({ key, label }) => {
-            const vis = editData.section_visibility || {};
-            const isVisible = vis[key] !== false;
-            return (
-              <div key={key} className="flex items-center justify-between py-2">
-                <span className="text-sm font-medium">{label}</span>
-                <div className="flex items-center gap-2">
-                  {isVisible ? <Eye className="w-4 h-4 text-primary" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
-                  <Switch
-                    checked={isVisible}
-                    onCheckedChange={(checked) => {
-                      setEditData((prev) => ({
-                        ...prev,
-                        section_visibility: { ...(prev.section_visibility || {}), [key]: checked },
-                      }));
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </SectionEditor>
-
-        {/* HERO */}
-        <SectionEditor title="🏠 Hero" section="hero" saving={saving} onSave={saveSection}>
-          {/* Avatar upload */}
-          <div>
-            <label className="text-xs text-muted-foreground mb-2 block">Фотография</label>
-            <div className="flex items-center gap-4">
-              {hero.avatar_url ? (
-                <img src={hero.avatar_url} alt="Avatar" className="w-20 h-20 rounded-full object-cover border-2 border-primary/30" />
-              ) : (
-                <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center border-2 border-border">
-                  <span className="text-muted-foreground text-xs">Нет фото</span>
-                </div>
-              )}
-              <div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleAvatarUpload}
-                />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={uploading}
-                >
-                  <Upload className="w-3 h-3 mr-1" />
-                  {uploading ? "Загрузка..." : "Загрузить фото"}
-                </Button>
-              </div>
-            </div>
+        <nav className="py-2">
+          {ADMIN_SECTIONS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setActiveSection(key)}
+              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                activeSection === key
+                  ? "bg-primary/10 text-primary font-medium border-r-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </nav>
+        <div className="px-4 py-3 border-t border-border/30 mt-auto">
+          <div className="flex items-center gap-2">
+            <a href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              ← На сайт
+            </a>
+            <Button variant="ghost" size="sm" className="ml-auto" onClick={handleLogout}>
+              <LogOut className="w-4 h-4" />
+            </Button>
           </div>
-          <Field label="Имя" value={hero.name} onChange={(v) => updateField("hero", "name", v)} />
-          <Field label="Заголовок (строка 1)" value={hero.title_line1} onChange={(v) => updateField("hero", "title_line1", v)} />
-          <Field label="Заголовок (строка 2)" value={hero.title_line2} onChange={(v) => updateField("hero", "title_line2", v)} />
-          <Field label="Подзаголовок (RU)" value={hero.subtitle_ru} onChange={(v) => updateField("hero", "subtitle_ru", v)} />
-          <Field label="Подзаголовок (EN)" value={hero.subtitle_en} onChange={(v) => updateField("hero", "subtitle_en", v)} />
-          <Field label="Описание (RU)" value={hero.description_ru} onChange={(v) => updateField("hero", "description_ru", v)} />
-          <Field label="Описание (EN)" value={hero.description_en} onChange={(v) => updateField("hero", "description_en", v)} />
-        </SectionEditor>
+        </div>
+      </aside>
 
-        {/* IMPACT */}
-        <SectionEditor title="📊 Impact" section="impact" saving={saving} onSave={saveSection}>
-          {impactData.metrics?.map((m: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">Метрика {i + 1}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("impact", "metrics", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Field label="Значение" value={m.value} onChange={(v) => updateField("impact", `metrics.${i}.value`, v)} />
-              <Field label="Метка (RU)" value={m.label_ru} onChange={(v) => updateField("impact", `metrics.${i}.label_ru`, v)} />
-              <Field label="Метка (EN)" value={m.label_en} onChange={(v) => updateField("impact", `metrics.${i}.label_en`, v)} />
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("impact", "metrics", { value: "", label_ru: "", label_en: "" })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить метрику
-          </Button>
-        </SectionEditor>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 overflow-y-auto h-screen">
+        <div className="max-w-3xl mx-auto px-6 py-8">
+          {activeSection === "section_visibility" && (
+            <SectionEditor title="👁 Видимость секций" section="section_visibility" saving={saving} onSave={saveSection}>
+              {[
+                { key: "hero", label: "🏠 Hero" },
+                { key: "impact", label: "📊 Impact" },
+                { key: "what_i_build", label: "🚀 What I Build" },
+                { key: "ai", label: "🤖 AI Experience" },
+                { key: "experience", label: "💼 Experience" },
+                { key: "skills", label: "🧠 Skills" },
+                { key: "industries", label: "🌍 Industries" },
+                { key: "projects", label: "📁 Projects" },
+                { key: "contact", label: "📬 Contact" },
+              ].map(({ key, label }) => {
+                const vis = editData.section_visibility || {};
+                const isVisible = vis[key] !== false;
+                return (
+                  <div key={key} className="flex items-center justify-between py-2">
+                    <span className="text-sm font-medium">{label}</span>
+                    <div className="flex items-center gap-2">
+                      {isVisible ? <Eye className="w-4 h-4 text-primary" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
+                      <Switch
+                        checked={isVisible}
+                        onCheckedChange={(checked) => {
+                          setEditData((prev) => ({
+                            ...prev,
+                            section_visibility: { ...(prev.section_visibility || {}), [key]: checked },
+                          }));
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </SectionEditor>
+          )}
 
-        {/* WHAT I BUILD */}
-        <SectionEditor title="🚀 What I Build" section="what_i_build" saving={saving} onSave={saveSection}>
-          {whatIBuildData.items?.map((item: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">Пункт {i + 1}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("what_i_build", "items", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Field label="Текст (RU)" value={item.text_ru} onChange={(v) => updateField("what_i_build", `items.${i}.text_ru`, v)} />
-              <Field label="Текст (EN)" value={item.text_en} onChange={(v) => updateField("what_i_build", `items.${i}.text_en`, v)} />
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("what_i_build", "items", { text_ru: "", text_en: "" })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить пункт
-          </Button>
-        </SectionEditor>
-
-        {/* AI */}
-        <SectionEditor title="🤖 AI Experience" section="ai" saving={saving} onSave={saveSection}>
-          {aiData.items?.map((item: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">AI блок {i + 1}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("ai", "items", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Field label="Заголовок (RU)" value={item.title_ru} onChange={(v) => updateField("ai", `items.${i}.title_ru`, v)} />
-              <Field label="Заголовок (EN)" value={item.title_en} onChange={(v) => updateField("ai", `items.${i}.title_en`, v)} />
-              <Field label="Описание (RU)" value={item.desc_ru} onChange={(v) => updateField("ai", `items.${i}.desc_ru`, v)} />
-              <Field label="Описание (EN)" value={item.desc_en} onChange={(v) => updateField("ai", `items.${i}.desc_en`, v)} />
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("ai", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "" })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить блок
-          </Button>
-        </SectionEditor>
-
-        {/* EXPERIENCE */}
-        <SectionEditor title="💼 Experience" section="experience" saving={saving} onSave={saveSection}>
-          {experienceData.timeline?.map((t: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">{t.company || t.company_ru || `Позиция ${i + 1}`}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("experience", "timeline", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Field label="Компания" value={t.company || ""} onChange={(v) => updateField("experience", `timeline.${i}.company`, v)} />
-              <Field label="Компания (RU)" value={t.company_ru || ""} onChange={(v) => updateField("experience", `timeline.${i}.company_ru`, v)} />
-              <Field label="Компания (EN)" value={t.company_en || ""} onChange={(v) => updateField("experience", `timeline.${i}.company_en`, v)} />
-              <Field label="Роль (RU)" value={t.role_ru} onChange={(v) => updateField("experience", `timeline.${i}.role_ru`, v)} />
-              <Field label="Роль (EN)" value={t.role_en} onChange={(v) => updateField("experience", `timeline.${i}.role_en`, v)} />
-              <Field label="Период (RU)" value={t.period_ru} onChange={(v) => updateField("experience", `timeline.${i}.period_ru`, v)} />
-              <Field label="Период (EN)" value={t.period_en} onChange={(v) => updateField("experience", `timeline.${i}.period_en`, v)} />
-              <Field label="Сайт компании (URL)" value={t.website_url || ""} onChange={(v) => updateField("experience", `timeline.${i}.website_url`, v)} />
+          {activeSection === "hero" && (
+            <SectionEditor title="🏠 Hero" section="hero" saving={saving} onSave={saveSection}>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Пункты (RU) — по одному на строку</label>
-                <Textarea
-                  value={(t.items_ru || []).join("\n")}
-                  onChange={(e) => updateField("experience", `timeline.${i}.items_ru`, e.target.value.split("\n"))}
-                  rows={3}
-                />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Пункты (EN) — по одному на строку</label>
-                <Textarea
-                  value={(t.items_en || []).join("\n")}
-                  onChange={(e) => updateField("experience", `timeline.${i}.items_en`, e.target.value.split("\n"))}
-                  rows={3}
-                />
-              </div>
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("experience", "timeline", { company: "", role_ru: "", role_en: "", period_ru: "", period_en: "", website_url: "", items_ru: [], items_en: [] })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить позицию
-          </Button>
-        </SectionEditor>
-
-        {/* SKILLS */}
-        <SectionEditor title="🧠 Skills" section="skills" saving={saving} onSave={saveSection}>
-          {skillsData.groups?.map((g: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">{g.title}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("skills", "groups", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Field label="Название группы" value={g.title} onChange={(v) => updateField("skills", `groups.${i}.title`, v)} />
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Навыки (RU) — по одному на строку</label>
-                <Textarea
-                  value={(g.skills_ru || []).join("\n")}
-                  onChange={(e) => updateField("skills", `groups.${i}.skills_ru`, e.target.value.split("\n"))}
-                  rows={3}
-                />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Навыки (EN) — по одному на строку</label>
-                <Textarea
-                  value={(g.skills_en || []).join("\n")}
-                  onChange={(e) => updateField("skills", `groups.${i}.skills_en`, e.target.value.split("\n"))}
-                  rows={3}
-                />
-              </div>
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("skills", "groups", { title: "", skills_ru: [], skills_en: [] })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить группу
-          </Button>
-        </SectionEditor>
-
-        {/* INDUSTRIES */}
-        <SectionEditor title="🌍 Industries" section="industries" saving={saving} onSave={saveSection}>
-          {industriesData.items?.map((item: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">Индустрия {i + 1}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("industries", "items", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-2 block">Иконка</label>
-                <div className="flex flex-wrap gap-2">
-                  {AVAILABLE_ICONS.map(({ name, icon: Icon }) => (
-                    <button
-                      key={name}
-                      type="button"
-                      onClick={() => updateField("industries", `items.${i}.icon`, name)}
-                      className={`p-2 rounded-lg border transition-all ${
-                        item.icon === name
-                          ? "border-primary bg-primary/20 text-primary"
-                          : "border-border/50 text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                      }`}
-                      title={name}
-                    >
-                      <Icon className="w-4 h-4" />
-                    </button>
-                  ))}
+                <label className="text-xs text-muted-foreground mb-2 block">Фотография</label>
+                <div className="flex items-center gap-4">
+                  {hero.avatar_url ? (
+                    <img src={hero.avatar_url} alt="Avatar" className="w-20 h-20 rounded-full object-cover border-2 border-primary/30" />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center border-2 border-border">
+                      <span className="text-muted-foreground text-xs">Нет фото</span>
+                    </div>
+                  )}
+                  <div>
+                    <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+                    <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
+                      <Upload className="w-3 h-3 mr-1" />
+                      {uploading ? "Загрузка..." : "Загрузить фото"}
+                    </Button>
+                  </div>
                 </div>
               </div>
-              <Field label="Название (RU)" value={item.label_ru} onChange={(v) => updateField("industries", `items.${i}.label_ru`, v)} />
-              <Field label="Название (EN)" value={item.label_en} onChange={(v) => updateField("industries", `items.${i}.label_en`, v)} />
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("industries", "items", { label_ru: "", label_en: "", icon: "Flame" })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить индустрию
-          </Button>
-        </SectionEditor>
+              <Field label="Имя" value={hero.name} onChange={(v) => updateField("hero", "name", v)} />
+              <Field label="Заголовок (строка 1)" value={hero.title_line1} onChange={(v) => updateField("hero", "title_line1", v)} />
+              <Field label="Заголовок (строка 2)" value={hero.title_line2} onChange={(v) => updateField("hero", "title_line2", v)} />
+              <Field label="Подзаголовок (RU)" value={hero.subtitle_ru} onChange={(v) => updateField("hero", "subtitle_ru", v)} />
+              <Field label="Подзаголовок (EN)" value={hero.subtitle_en} onChange={(v) => updateField("hero", "subtitle_en", v)} />
+              <Field label="Описание (RU)" value={hero.description_ru} onChange={(v) => updateField("hero", "description_ru", v)} />
+              <Field label="Описание (EN)" value={hero.description_en} onChange={(v) => updateField("hero", "description_en", v)} />
+            </SectionEditor>
+          )}
 
-        {/* PROJECTS */}
-        <SectionEditor title="📁 Selected Projects" section="projects" saving={saving} onSave={saveSection}>
-          {projectsData.items?.map((item: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground font-medium">Проект {i + 1}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("projects", "items", i)}>
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-              <Field label="Название (RU)" value={item.title_ru} onChange={(v) => updateField("projects", `items.${i}.title_ru`, v)} />
-              <Field label="Название (EN)" value={item.title_en} onChange={(v) => updateField("projects", `items.${i}.title_en`, v)} />
-              <Field label="Описание (RU)" value={item.desc_ru} onChange={(v) => updateField("projects", `items.${i}.desc_ru`, v)} />
-              <Field label="Описание (EN)" value={item.desc_en} onChange={(v) => updateField("projects", `items.${i}.desc_en`, v)} />
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Статус</label>
-                <select
-                  value={item.status || "completed"}
-                  onChange={(e) => updateField("projects", `items.${i}.status`, e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
-                >
-                  <option value="completed">Завершён</option>
-                  <option value="concept">Концепт</option>
-                </select>
-              </div>
-            </div>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("projects", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "", status: "completed" })}>
-            <Plus className="w-3 h-3 mr-1" /> Добавить проект
-          </Button>
-        </SectionEditor>
+          {activeSection === "impact" && (
+            <SectionEditor title="📊 Impact" section="impact" saving={saving} onSave={saveSection}>
+              {impactData.metrics?.map((m: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">Метрика {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("impact", "metrics", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Значение" value={m.value} onChange={(v) => updateField("impact", `metrics.${i}.value`, v)} />
+                  <Field label="Метка (RU)" value={m.label_ru} onChange={(v) => updateField("impact", `metrics.${i}.label_ru`, v)} />
+                  <Field label="Метка (EN)" value={m.label_en} onChange={(v) => updateField("impact", `metrics.${i}.label_en`, v)} />
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("impact", "metrics", { value: "", label_ru: "", label_en: "" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить метрику
+              </Button>
+            </SectionEditor>
+          )}
 
-        {/* VISION */}
-        <SectionEditor title="🚀 Vision" section="vision" saving={saving} onSave={saveSection}>
-          <Field label="Заголовок (RU)" value={visionData.title_ru} onChange={(v) => updateField("vision", "title_ru", v)} />
-          <Field label="Заголовок (EN)" value={visionData.title_en} onChange={(v) => updateField("vision", "title_en", v)} />
-          <Field label="Акцент (gradient)" value={visionData.highlight} onChange={(v) => updateField("vision", "highlight", v)} />
-          <FieldTextarea label="Описание (RU)" value={visionData.description_ru} onChange={(v) => updateField("vision", "description_ru", v)} />
-          <FieldTextarea label="Описание (EN)" value={visionData.description_en} onChange={(v) => updateField("vision", "description_en", v)} />
-        </SectionEditor>
+          {activeSection === "what_i_build" && (
+            <SectionEditor title="🚀 What I Build" section="what_i_build" saving={saving} onSave={saveSection}>
+              {whatIBuildData.items?.map((item: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">Пункт {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("what_i_build", "items", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Текст (RU)" value={item.text_ru} onChange={(v) => updateField("what_i_build", `items.${i}.text_ru`, v)} />
+                  <Field label="Текст (EN)" value={item.text_en} onChange={(v) => updateField("what_i_build", `items.${i}.text_en`, v)} />
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("what_i_build", "items", { text_ru: "", text_en: "" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить пункт
+              </Button>
+            </SectionEditor>
+          )}
 
-        {/* CONTACT */}
-        <SectionEditor title="📬 Contact" section="contact" saving={saving} onSave={saveSection}>
-          <Field label="Email" value={contactData.email} onChange={(v) => updateField("contact", "email", v)} />
-          <Field label="Телефон (ссылка)" value={contactData.phone} onChange={(v) => updateField("contact", "phone", v)} />
-          <Field label="Телефон (отображение)" value={contactData.phone_display} onChange={(v) => updateField("contact", "phone_display", v)} />
-          <Field label="LinkedIn URL" value={contactData.linkedin_url} onChange={(v) => updateField("contact", "linkedin_url", v)} />
-          <Field label="URL портфолио" value={contactData.portfolio_url} onChange={(v) => updateField("contact", "portfolio_url", v)} />
-          <FieldTextarea label="Описание (RU)" value={contactData.description_ru} onChange={(v) => updateField("contact", "description_ru", v)} />
-          <FieldTextarea label="Описание (EN)" value={contactData.description_en} onChange={(v) => updateField("contact", "description_en", v)} />
-        </SectionEditor>
-      </div>
+          {activeSection === "ai" && (
+            <SectionEditor title="🤖 AI Experience" section="ai" saving={saving} onSave={saveSection}>
+              {aiData.items?.map((item: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">AI блок {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("ai", "items", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Заголовок (RU)" value={item.title_ru} onChange={(v) => updateField("ai", `items.${i}.title_ru`, v)} />
+                  <Field label="Заголовок (EN)" value={item.title_en} onChange={(v) => updateField("ai", `items.${i}.title_en`, v)} />
+                  <Field label="Описание (RU)" value={item.desc_ru} onChange={(v) => updateField("ai", `items.${i}.desc_ru`, v)} />
+                  <Field label="Описание (EN)" value={item.desc_en} onChange={(v) => updateField("ai", `items.${i}.desc_en`, v)} />
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("ai", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить блок
+              </Button>
+            </SectionEditor>
+          )}
+
+          {activeSection === "experience" && (
+            <SectionEditor title="💼 Experience" section="experience" saving={saving} onSave={saveSection}>
+              {experienceData.timeline?.map((t: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">{t.company || t.company_ru || `Позиция ${i + 1}`}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("experience", "timeline", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Компания" value={t.company || ""} onChange={(v) => updateField("experience", `timeline.${i}.company`, v)} />
+                  <Field label="Компания (RU)" value={t.company_ru || ""} onChange={(v) => updateField("experience", `timeline.${i}.company_ru`, v)} />
+                  <Field label="Компания (EN)" value={t.company_en || ""} onChange={(v) => updateField("experience", `timeline.${i}.company_en`, v)} />
+                  <Field label="Роль (RU)" value={t.role_ru} onChange={(v) => updateField("experience", `timeline.${i}.role_ru`, v)} />
+                  <Field label="Роль (EN)" value={t.role_en} onChange={(v) => updateField("experience", `timeline.${i}.role_en`, v)} />
+                  <Field label="Период (RU)" value={t.period_ru} onChange={(v) => updateField("experience", `timeline.${i}.period_ru`, v)} />
+                  <Field label="Период (EN)" value={t.period_en} onChange={(v) => updateField("experience", `timeline.${i}.period_en`, v)} />
+                  <Field label="Сайт компании (URL)" value={t.website_url || ""} onChange={(v) => updateField("experience", `timeline.${i}.website_url`, v)} />
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Пункты (RU) — по одному на строку</label>
+                    <Textarea value={(t.items_ru || []).join("\n")} onChange={(e) => updateField("experience", `timeline.${i}.items_ru`, e.target.value.split("\n"))} rows={3} />
+                  </div>
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Пункты (EN) — по одному на строку</label>
+                    <Textarea value={(t.items_en || []).join("\n")} onChange={(e) => updateField("experience", `timeline.${i}.items_en`, e.target.value.split("\n"))} rows={3} />
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("experience", "timeline", { company: "", role_ru: "", role_en: "", period_ru: "", period_en: "", website_url: "", items_ru: [], items_en: [] })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить позицию
+              </Button>
+            </SectionEditor>
+          )}
+
+          {activeSection === "skills" && (
+            <SectionEditor title="🧠 Skills" section="skills" saving={saving} onSave={saveSection}>
+              {skillsData.groups?.map((g: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">{g.title}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("skills", "groups", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Название группы" value={g.title} onChange={(v) => updateField("skills", `groups.${i}.title`, v)} />
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Навыки (RU) — по одному на строку</label>
+                    <Textarea value={(g.skills_ru || []).join("\n")} onChange={(e) => updateField("skills", `groups.${i}.skills_ru`, e.target.value.split("\n"))} rows={3} />
+                  </div>
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Навыки (EN) — по одному на строку</label>
+                    <Textarea value={(g.skills_en || []).join("\n")} onChange={(e) => updateField("skills", `groups.${i}.skills_en`, e.target.value.split("\n"))} rows={3} />
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("skills", "groups", { title: "", skills_ru: [], skills_en: [] })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить группу
+              </Button>
+            </SectionEditor>
+          )}
+
+          {activeSection === "industries" && (
+            <SectionEditor title="🌍 Industries" section="industries" saving={saving} onSave={saveSection}>
+              {industriesData.items?.map((item: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">Индустрия {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("industries", "items", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-2 block">Иконка</label>
+                    <div className="flex flex-wrap gap-2">
+                      {AVAILABLE_ICONS.map(({ name, icon: Icon }) => (
+                        <button
+                          key={name}
+                          type="button"
+                          onClick={() => updateField("industries", `items.${i}.icon`, name)}
+                          className={`p-2 rounded-lg border transition-all ${
+                            item.icon === name
+                              ? "border-primary bg-primary/20 text-primary"
+                              : "border-border/50 text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                          }`}
+                          title={name}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <Field label="Название (RU)" value={item.label_ru} onChange={(v) => updateField("industries", `items.${i}.label_ru`, v)} />
+                  <Field label="Название (EN)" value={item.label_en} onChange={(v) => updateField("industries", `items.${i}.label_en`, v)} />
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("industries", "items", { label_ru: "", label_en: "", icon: "Flame" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить индустрию
+              </Button>
+            </SectionEditor>
+          )}
+
+          {activeSection === "projects" && (
+            <SectionEditor title="📁 Selected Projects" section="projects" saving={saving} onSave={saveSection}>
+              {projectsData.items?.map((item: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">Проект {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("projects", "items", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Название (RU)" value={item.title_ru} onChange={(v) => updateField("projects", `items.${i}.title_ru`, v)} />
+                  <Field label="Название (EN)" value={item.title_en} onChange={(v) => updateField("projects", `items.${i}.title_en`, v)} />
+                  <Field label="Описание (RU)" value={item.desc_ru} onChange={(v) => updateField("projects", `items.${i}.desc_ru`, v)} />
+                  <Field label="Описание (EN)" value={item.desc_en} onChange={(v) => updateField("projects", `items.${i}.desc_en`, v)} />
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Статус</label>
+                    <select
+                      value={item.status || "completed"}
+                      onChange={(e) => updateField("projects", `items.${i}.status`, e.target.value)}
+                      className="w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+                    >
+                      <option value="completed">Завершён</option>
+                      <option value="concept">Концепт</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("projects", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "", status: "completed" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить проект
+              </Button>
+            </SectionEditor>
+          )}
+
+          {activeSection === "vision" && (
+            <SectionEditor title="🚀 Vision" section="vision" saving={saving} onSave={saveSection}>
+              <Field label="Заголовок (RU)" value={visionData.title_ru} onChange={(v) => updateField("vision", "title_ru", v)} />
+              <Field label="Заголовок (EN)" value={visionData.title_en} onChange={(v) => updateField("vision", "title_en", v)} />
+              <Field label="Акцент (gradient)" value={visionData.highlight} onChange={(v) => updateField("vision", "highlight", v)} />
+              <FieldTextarea label="Описание (RU)" value={visionData.description_ru} onChange={(v) => updateField("vision", "description_ru", v)} />
+              <FieldTextarea label="Описание (EN)" value={visionData.description_en} onChange={(v) => updateField("vision", "description_en", v)} />
+            </SectionEditor>
+          )}
+
+          {activeSection === "contact" && (
+            <SectionEditor title="📬 Contact" section="contact" saving={saving} onSave={saveSection}>
+              <Field label="Email" value={contactData.email} onChange={(v) => updateField("contact", "email", v)} />
+              <Field label="Телефон (ссылка)" value={contactData.phone} onChange={(v) => updateField("contact", "phone", v)} />
+              <Field label="Телефон (отображение)" value={contactData.phone_display} onChange={(v) => updateField("contact", "phone_display", v)} />
+              <Field label="LinkedIn URL" value={contactData.linkedin_url} onChange={(v) => updateField("contact", "linkedin_url", v)} />
+              <Field label="URL портфолио" value={contactData.portfolio_url} onChange={(v) => updateField("contact", "portfolio_url", v)} />
+              <FieldTextarea label="Описание (RU)" value={contactData.description_ru} onChange={(v) => updateField("contact", "description_ru", v)} />
+              <FieldTextarea label="Описание (EN)" value={contactData.description_en} onChange={(v) => updateField("contact", "description_en", v)} />
+            </SectionEditor>
+          )}
+        </div>
+      </main>
     </div>
   );
 };
