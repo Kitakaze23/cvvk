@@ -1,6 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
-import avatarImg from "@/assets/avatar-placeholder.png";
+import avatarFallback from "@/assets/avatar-placeholder.png";
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -10,6 +10,7 @@ const HeroSection = () => {
   const name = hero.name || "Vasiliy Kolesnikov";
   const line1 = hero.title_line1 || "Industrial AI";
   const line2 = hero.title_line2 || "Product Leader";
+  const avatarUrl = hero.avatar_url || avatarFallback;
   const subtitle = t(
     hero.subtitle_ru || "Создаю AI-driven продукты для инфраструктуры и аналитики",
     hero.subtitle_en || "Building AI-driven infrastructure and analytics products"
@@ -35,11 +36,10 @@ const HeroSection = () => {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        {/* Avatar */}
         <div className="animate-fade-up mb-6 flex justify-center">
           <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-2 border-primary/30 glow-sm">
             <img
-              src={avatarImg}
+              src={avatarUrl}
               alt={name}
               width={144}
               height={144}

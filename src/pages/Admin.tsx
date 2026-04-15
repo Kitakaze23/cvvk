@@ -1,12 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/contexts/SiteContentContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { LogOut, Save, Plus, Trash2 } from "lucide-react";
+import { LogOut, Save, Plus, Trash2, Upload, Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
+
+const AVAILABLE_ICONS = [
+  { name: "Flame", icon: Flame },
+  { name: "Building2", icon: Building2 },
+  { name: "Brain", icon: Brain },
+  { name: "Leaf", icon: Leaf },
+  { name: "Zap", icon: Zap },
+  { name: "Globe", icon: Globe },
+  { name: "Shield", icon: Shield },
+  { name: "Cpu", icon: Cpu },
+  { name: "Rocket", icon: Rocket },
+  { name: "Heart", icon: Heart },
+  { name: "Star", icon: Star },
+  { name: "Target", icon: Target },
+  { name: "TrendingUp", icon: TrendingUp },
+  { name: "Database", icon: Database },
+  { name: "Cloud", icon: Cloud },
+  { name: "Factory", icon: Factory },
+  { name: "Gauge", icon: Gauge },
+  { name: "BarChart3", icon: BarChart3 },
+  { name: "Network", icon: Network },
+];
 
 const Admin = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -17,6 +39,8 @@ const Admin = () => {
   const { content, updateSection, refetch } = useSiteContent();
   const [editData, setEditData] = useState<Record<string, any>>({});
   const [saving, setSaving] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_event, session) => {
@@ -73,10 +97,12 @@ const Admin = () => {
   const updateField = (section: string, path: string, value: any) => {
     setEditData((prev) => {
       const copy = JSON.parse(JSON.stringify(prev));
+      if (!copy[section]) copy[section] = {};
       const keys = path.split(".");
       let obj = copy[section];
       for (let i = 0; i < keys.length - 1; i++) {
         const key = isNaN(Number(keys[i])) ? keys[i] : Number(keys[i]);
+        if (!obj[key]) obj[key] = {};
         obj = obj[key];
       }
       const lastKey = isNaN(Number(keys[keys.length - 1])) ? keys[keys.length - 1] : Number(keys[keys.length - 1]);
@@ -109,6 +135,24 @@ const Admin = () => {
       obj.splice(index, 1);
       return copy;
     });
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const fileName = `avatar-${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from("avatars").upload(fileName, file, { upsert: true });
+    if (error) {
+      toast.error("Ошибка загрузки: " + error.message);
+      setUploading(false);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(fileName);
+    updateField("hero", "avatar_url", urlData.publicUrl);
+    toast.success("Фото загружено! Не забудьте сохранить секцию Hero.");
+    setUploading(false);
   };
 
   if (loading) {
@@ -186,6 +230,37 @@ const Admin = () => {
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
         {/* HERO */}
         <SectionEditor title="🏠 Hero" section="hero" saving={saving} onSave={saveSection}>
+          {/* Avatar upload */}
+          <div>
+            <label className="text-xs text-muted-foreground mb-2 block">Фотография</label>
+            <div className="flex items-center gap-4">
+              {hero.avatar_url ? (
+                <img src={hero.avatar_url} alt="Avatar" className="w-20 h-20 rounded-full object-cover border-2 border-primary/30" />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center border-2 border-border">
+                  <span className="text-muted-foreground text-xs">Нет фото</span>
+                </div>
+              )}
+              <div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleAvatarUpload}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  <Upload className="w-3 h-3 mr-1" />
+                  {uploading ? "Загрузка..." : "Загрузить фото"}
+                </Button>
+              </div>
+            </div>
+          </div>
           <Field label="Имя" value={hero.name} onChange={(v) => updateField("hero", "name", v)} />
           <Field label="Заголовок (строка 1)" value={hero.title_line1} onChange={(v) => updateField("hero", "title_line1", v)} />
           <Field label="Заголовок (строка 2)" value={hero.title_line2} onChange={(v) => updateField("hero", "title_line2", v)} />
@@ -313,18 +388,38 @@ const Admin = () => {
         {/* INDUSTRIES */}
         <SectionEditor title="🌍 Industries" section="industries" saving={saving} onSave={saveSection}>
           {industriesData.items?.map((item: any, i: number) => (
-            <div key={i} className="glass rounded-lg p-4 space-y-2">
+            <div key={i} className="glass rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground font-medium">Индустрия {i + 1}</span>
                 <Button variant="ghost" size="sm" onClick={() => removeArrayItem("industries", "items", i)}>
                   <Trash2 className="w-3 h-3" />
                 </Button>
               </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-2 block">Иконка</label>
+                <div className="flex flex-wrap gap-2">
+                  {AVAILABLE_ICONS.map(({ name, icon: Icon }) => (
+                    <button
+                      key={name}
+                      type="button"
+                      onClick={() => updateField("industries", `items.${i}.icon`, name)}
+                      className={`p-2 rounded-lg border transition-all ${
+                        item.icon === name
+                          ? "border-primary bg-primary/20 text-primary"
+                          : "border-border/50 text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                      }`}
+                      title={name}
+                    >
+                      <Icon className="w-4 h-4" />
+                    </button>
+                  ))}
+                </div>
+              </div>
               <Field label="Название (RU)" value={item.label_ru} onChange={(v) => updateField("industries", `items.${i}.label_ru`, v)} />
               <Field label="Название (EN)" value={item.label_en} onChange={(v) => updateField("industries", `items.${i}.label_en`, v)} />
             </div>
           ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("industries", "items", { label_ru: "", label_en: "" })}>
+          <Button variant="outline" size="sm" onClick={() => addArrayItem("industries", "items", { label_ru: "", label_en: "", icon: "Flame" })}>
             <Plus className="w-3 h-3 mr-1" /> Добавить индустрию
           </Button>
         </SectionEditor>
