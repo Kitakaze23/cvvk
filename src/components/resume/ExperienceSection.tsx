@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
 import { useInView } from "@/hooks/useInView";
+import { ExternalLink } from "lucide-react";
 
 const ExperienceSection = () => {
   const { t } = useLanguage();
@@ -58,7 +59,19 @@ const ExperienceSection = () => {
                   <div className="glass glass-hover rounded-xl p-6 md:p-8">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                       <div>
-                        <h3 className="font-display font-bold text-xl">{companyName}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-display font-bold text-xl">{companyName}</h3>
+                          {item.website_url && (
+                            <a 
+                              href={item.website_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                          )}
+                        </div>
                         <p className="text-primary text-sm font-medium">{t(item.role_ru, item.role_en)}</p>
                       </div>
                       <span className="text-muted-foreground text-sm mt-1 md:mt-0">{t(item.period_ru, item.period_en)}</span>
