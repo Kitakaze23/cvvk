@@ -208,7 +208,7 @@ export const generateResumePDF = (content: SiteContent, lang: "ru" | "en") => {
     doc.text(g.title, margin + 2, y);
     y += 5;
 
-    const skills = (t(g.skills_ru, g.skills_en) as any) as string[];
+    const skills = t(g.skills_ru, g.skills_en) as unknown as string[];
     if (skills) {
       doc.setFont("helvetica", "normal");
       doc.setTextColor(80, 80, 80);
