@@ -1,9 +1,9 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
 import { useInView } from "@/hooks/useInView";
-import { Rocket, BarChart3, Layers, Shield } from "lucide-react";
+import { getIcon } from "@/utils/iconMap";
 
-const iconMap = [Rocket, BarChart3, Layers, Shield];
+const DEFAULT_ICONS = ["Rocket", "BarChart3", "Layers", "Shield"];
 
 const WhatIBuildSection = () => {
   const { t } = useLanguage();
@@ -11,10 +11,10 @@ const WhatIBuildSection = () => {
   const { ref, inView } = useInView();
 
   const defaults = [
-    { text_ru: "AI-powered системы мониторинга инфраструктуры", text_en: "AI-powered infrastructure monitoring systems" },
-    { text_ru: "Платформы данных для принятия бизнес-решений", text_en: "Data platforms for business decision-making" },
-    { text_ru: "Industrial SaaS продукты", text_en: "Industrial SaaS products" },
-    { text_ru: "Системы предиктивной аналитики и рисков", text_en: "Risk prediction and analytics systems" },
+    { text_ru: "AI-powered системы мониторинга инфраструктуры", text_en: "AI-powered infrastructure monitoring systems", icon: "Rocket" },
+    { text_ru: "Платформы данных для принятия бизнес-решений", text_en: "Data platforms for business decision-making", icon: "BarChart3" },
+    { text_ru: "Industrial SaaS продукты", text_en: "Industrial SaaS products", icon: "Layers" },
+    { text_ru: "Системы предиктивной аналитики и рисков", text_en: "Risk prediction and analytics systems", icon: "Shield" },
   ];
 
   const items = content.what_i_build?.items || defaults;
@@ -34,7 +34,7 @@ const WhatIBuildSection = () => {
 
         <div ref={ref} className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {items.map((item: any, i: number) => {
-            const Icon = iconMap[i % iconMap.length];
+            const Icon = getIcon(item.icon || DEFAULT_ICONS[i % DEFAULT_ICONS.length]);
             return (
               <div
                 key={i}

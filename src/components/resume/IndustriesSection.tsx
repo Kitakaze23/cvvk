@@ -1,12 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
-import { Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import type { LucideIcon } from "lucide-react";
-
-const ICON_MAP: Record<string, LucideIcon> = {
-  Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network,
-};
+import { getIcon } from "@/utils/iconMap";
 
 const DEFAULT_ICONS = ["Flame", "Building2", "Brain", "Leaf"];
 
@@ -35,8 +30,7 @@ const IndustriesSection = () => {
 
         <div ref={ref} className="flex flex-wrap justify-center gap-4 md:gap-6">
           {industries.map((ind: any, i: number) => {
-            const iconName = ind.icon || DEFAULT_ICONS[i % DEFAULT_ICONS.length];
-            const Icon = ICON_MAP[iconName] || Flame;
+            const Icon = getIcon(ind.icon || DEFAULT_ICONS[i % DEFAULT_ICONS.length]);
             return (
               <div
                 key={i}
