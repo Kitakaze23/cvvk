@@ -5,7 +5,7 @@ import { Download } from "lucide-react";
 import { generateResumePDF } from "@/utils/generatePDF";
 
 const HeroSection = () => {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const { content } = useSiteContent();
   const hero = content.hero || {};
 
