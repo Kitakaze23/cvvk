@@ -439,26 +439,7 @@ const Admin = () => {
                     <span className="text-xs text-muted-foreground font-medium">Индустрия {i + 1}</span>
                     <Button variant="ghost" size="sm" onClick={() => removeArrayItem("industries", "items", i)}><Trash2 className="w-3 h-3" /></Button>
                   </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground mb-2 block">Иконка</label>
-                    <div className="flex flex-wrap gap-2">
-                      {AVAILABLE_ICONS.map(({ name, icon: Icon }) => (
-                        <button
-                          key={name}
-                          type="button"
-                          onClick={() => updateField("industries", `items.${i}.icon`, name)}
-                          className={`p-2 rounded-lg border transition-all ${
-                            item.icon === name
-                              ? "border-primary bg-primary/20 text-primary"
-                              : "border-border/50 text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                          }`}
-                          title={name}
-                        >
-                          <Icon className="w-4 h-4" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  <IconPicker value={item.icon || ""} onChange={(v) => updateField("industries", `items.${i}.icon`, v)} />
                   <Field label="Название (RU)" value={item.label_ru} onChange={(v) => updateField("industries", `items.${i}.label_ru`, v)} />
                   <Field label="Название (EN)" value={item.label_en} onChange={(v) => updateField("industries", `items.${i}.label_en`, v)} />
                 </div>
