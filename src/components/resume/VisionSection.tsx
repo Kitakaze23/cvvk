@@ -1,9 +1,13 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSiteContent } from "@/contexts/SiteContentContext";
 import { useInView } from "@/hooks/useInView";
 
 const VisionSection = () => {
   const { t } = useLanguage();
+  const { content } = useSiteContent();
   const { ref, inView } = useInView();
+
+  const v = content.vision || {};
 
   return (
     <section className="py-32 relative">
@@ -14,16 +18,13 @@ const VisionSection = () => {
             {t("Видение", "Vision")}
           </p>
           <h2 className="font-display text-3xl md:text-5xl font-bold mb-6 leading-tight">
-            {t(
-              "Строю будущее",
-              "Building the future of"
-            )}{" "}
-            <span className="text-gradient">Infrastructure AI</span>
+            {t(v.title_ru || "Строю будущее", v.title_en || "Building the future of")}{" "}
+            <span className="text-gradient">{v.highlight || "Infrastructure AI"}</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
             {t(
-              "AI-мониторинг трубопроводов, инфраструктуры и климатических рисков. Применение машинного обучения для предиктивной аналитики промышленных объектов.",
-              "AI monitoring for pipelines, infrastructure and climate risks. Applying machine learning for predictive analytics of industrial assets."
+              v.description_ru || "AI-мониторинг трубопроводов, инфраструктуры и климатических рисков. Применение машинного обучения для предиктивной аналитики промышленных объектов.",
+              v.description_en || "AI monitoring for pipelines, infrastructure and climate risks. Applying machine learning for predictive analytics of industrial assets."
             )}
           </p>
         </div>
