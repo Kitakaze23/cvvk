@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/30">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <span className="font-display font-bold text-lg tracking-tight">
-          <span className="text-gradient">VK</span>
+          <span className="text-gradient">Vasiliy Kolesnikov</span>
         </span>
         <div className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
           <a href="#impact" className="hover:text-foreground transition-colors">{t("Результаты", "Impact")}</a>
