@@ -5,31 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { LogOut, Save, Plus, Trash2, Upload, Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network, Eye, EyeOff } from "lucide-react";
+import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import IconPicker from "@/components/resume/IconPicker";
 import type { Session } from "@supabase/supabase-js";
-
-const AVAILABLE_ICONS = [
-  { name: "Flame", icon: Flame },
-  { name: "Building2", icon: Building2 },
-  { name: "Brain", icon: Brain },
-  { name: "Leaf", icon: Leaf },
-  { name: "Zap", icon: Zap },
-  { name: "Globe", icon: Globe },
-  { name: "Shield", icon: Shield },
-  { name: "Cpu", icon: Cpu },
-  { name: "Rocket", icon: Rocket },
-  { name: "Heart", icon: Heart },
-  { name: "Star", icon: Star },
-  { name: "Target", icon: Target },
-  { name: "TrendingUp", icon: TrendingUp },
-  { name: "Database", icon: Database },
-  { name: "Cloud", icon: Cloud },
-  { name: "Factory", icon: Factory },
-  { name: "Gauge", icon: Gauge },
-  { name: "BarChart3", icon: BarChart3 },
-  { name: "Network", icon: Network },
-];
 
 const ADMIN_SECTIONS = [
   { key: "section_visibility", label: "👁 Видимость", icon: Eye },
