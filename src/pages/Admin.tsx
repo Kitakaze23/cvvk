@@ -438,6 +438,7 @@ const Admin = () => {
           <Field label="Email" value={contactData.email} onChange={(v) => updateField("contact", "email", v)} />
           <Field label="Телефон (ссылка)" value={contactData.phone} onChange={(v) => updateField("contact", "phone", v)} />
           <Field label="Телефон (отображение)" value={contactData.phone_display} onChange={(v) => updateField("contact", "phone_display", v)} />
+          <Field label="LinkedIn URL" value={contactData.linkedin_url} onChange={(v) => updateField("contact", "linkedin_url", v)} />
           <Field label="URL портфолио" value={contactData.portfolio_url} onChange={(v) => updateField("contact", "portfolio_url", v)} />
           <FieldTextarea label="Описание (RU)" value={contactData.description_ru} onChange={(v) => updateField("contact", "description_ru", v)} />
           <FieldTextarea label="Описание (EN)" value={contactData.description_en} onChange={(v) => updateField("contact", "description_en", v)} />

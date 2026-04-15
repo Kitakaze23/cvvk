@@ -1,6 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
-import { Mail, Phone, ExternalLink } from "lucide-react";
+import { Mail, Phone, ExternalLink, Linkedin } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const ContactSection = () => {
@@ -13,6 +13,7 @@ const ContactSection = () => {
   const phone = c.phone || "+70000000000";
   const phoneDisplay = c.phone_display || "+7 (000) 000-00-00";
   const portfolioUrl = c.portfolio_url || "#";
+  const linkedinUrl = c.linkedin_url || "";
   const description = t(
     c.description_ru || "Открыт для обсуждения продуктовых ролей, консалтинга и партнёрства в сфере Industrial AI.",
     c.description_en || "Open to discuss product roles, consulting, and partnerships in Industrial AI."
@@ -57,6 +58,17 @@ const ContactSection = () => {
             <ExternalLink className="w-4 h-4 text-primary" />
             <span className="text-sm">Portfolio</span>
           </a>
+          {linkedinUrl && (
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass glass-hover rounded-xl px-6 py-4 flex items-center gap-3 justify-center"
+            >
+              <Linkedin className="w-4 h-4 text-primary" />
+              <span className="text-sm">LinkedIn</span>
+            </a>
+          )}
         </div>
 
         <div className={inView ? "animate-fade-up animate-delay-300" : "opacity-0"}>
