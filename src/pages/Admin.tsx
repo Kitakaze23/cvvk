@@ -328,6 +328,7 @@ const Admin = () => {
               <Field label="Роль (EN)" value={t.role_en} onChange={(v) => updateField("experience", `timeline.${i}.role_en`, v)} />
               <Field label="Период (RU)" value={t.period_ru} onChange={(v) => updateField("experience", `timeline.${i}.period_ru`, v)} />
               <Field label="Период (EN)" value={t.period_en} onChange={(v) => updateField("experience", `timeline.${i}.period_en`, v)} />
+              <Field label="Сайт компании (URL)" value={t.website_url || ""} onChange={(v) => updateField("experience", `timeline.${i}.website_url`, v)} />
               <div>
                 <label className="text-xs text-muted-foreground mb-1 block">Пункты (RU) — по одному на строку</label>
                 <Textarea
@@ -346,7 +347,7 @@ const Admin = () => {
               </div>
             </div>
           ))}
-          <Button variant="outline" size="sm" onClick={() => addArrayItem("experience", "timeline", { company: "", role_ru: "", role_en: "", period_ru: "", period_en: "", items_ru: [], items_en: [] })}>
+          <Button variant="outline" size="sm" onClick={() => addArrayItem("experience", "timeline", { company: "", role_ru: "", role_en: "", period_ru: "", period_en: "", website_url: "", items_ru: [], items_en: [] })}>
             <Plus className="w-3 h-3 mr-1" /> Добавить позицию
           </Button>
         </SectionEditor>
