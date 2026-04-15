@@ -1,6 +1,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
 import avatarFallback from "@/assets/avatar-placeholder.png";
+import { Download } from "lucide-react";
+import { generateResumePDF } from "@/utils/generatePDF";
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -81,6 +83,13 @@ const HeroSection = () => {
           >
             {t("Связаться", "Contact")}
           </a>
+          <button
+            onClick={() => generateResumePDF(content, lang as "ru" | "en")}
+            className="px-8 py-3.5 rounded-lg border border-border text-foreground font-medium text-sm hover:border-primary/50 hover:bg-secondary/50 transition-all inline-flex items-center gap-2 justify-center"
+          >
+            <Download className="w-4 h-4" />
+            {t("Скачать PDF", "Download PDF")}
+          </button>
         </div>
       </div>
 
