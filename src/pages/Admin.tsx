@@ -31,6 +31,20 @@ const AVAILABLE_ICONS = [
   { name: "Network", icon: Network },
 ];
 
+const ADMIN_SECTIONS = [
+  { key: "section_visibility", label: "👁 Видимость", icon: Eye },
+  { key: "hero", label: "🏠 Hero", icon: Rocket },
+  { key: "impact", label: "📊 Impact", icon: BarChart3 },
+  { key: "what_i_build", label: "🚀 What I Build", icon: Rocket },
+  { key: "ai", label: "🤖 AI", icon: Brain },
+  { key: "experience", label: "💼 Experience", icon: Building2 },
+  { key: "skills", label: "🧠 Skills", icon: Brain },
+  { key: "industries", label: "🌍 Industries", icon: Globe },
+  { key: "projects", label: "📁 Projects", icon: Star },
+  { key: "vision", label: "🚀 Vision", icon: Target },
+  { key: "contact", label: "📬 Contact", icon: Heart },
+];
+
 const Admin = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,6 +56,7 @@ const Admin = () => {
   const [saving, setSaving] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_event, session) => {
