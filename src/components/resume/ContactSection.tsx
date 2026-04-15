@@ -1,0 +1,66 @@
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Mail, Phone, ExternalLink } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+
+const ContactSection = () => {
+  const { t } = useLanguage();
+  const { ref, inView } = useInView();
+
+  return (
+    <section id="contact" className="py-32 relative">
+      <div ref={ref} className="max-w-3xl mx-auto px-6 text-center">
+        <div className={inView ? "animate-fade-up" : "opacity-0"}>
+          <p className="text-primary text-sm font-medium tracking-[0.15em] uppercase mb-3">
+            {t("Контакт", "Contact")}
+          </p>
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-6">
+            {t("Давайте создадим", "Let's build")}
+            <br />
+            <span className="text-gradient">{t("что-то значимое", "something impactful")}</span>
+          </h2>
+          <p className="text-muted-foreground mb-10 max-w-lg mx-auto">
+            {t(
+              "Открыт для обсуждения продуктовых ролей, консалтинга и партнёрства в сфере Industrial AI.",
+              "Open to discuss product roles, consulting, and partnerships in Industrial AI."
+            )}
+          </p>
+        </div>
+
+        <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-10 ${inView ? "animate-fade-up animate-delay-200" : "opacity-0"}`}>
+          <a
+            href="mailto:vasiliy@example.com"
+            className="glass glass-hover rounded-xl px-6 py-4 flex items-center gap-3 justify-center"
+          >
+            <Mail className="w-4 h-4 text-primary" />
+            <span className="text-sm">vasiliy@example.com</span>
+          </a>
+          <a
+            href="tel:+70000000000"
+            className="glass glass-hover rounded-xl px-6 py-4 flex items-center gap-3 justify-center"
+          >
+            <Phone className="w-4 h-4 text-primary" />
+            <span className="text-sm">+7 (000) 000-00-00</span>
+          </a>
+          <a
+            href="#"
+            className="glass glass-hover rounded-xl px-6 py-4 flex items-center gap-3 justify-center"
+          >
+            <ExternalLink className="w-4 h-4 text-primary" />
+            <span className="text-sm">Portfolio</span>
+          </a>
+        </div>
+
+        <div className={inView ? "animate-fade-up animate-delay-300" : "opacity-0"}>
+          <a
+            href="mailto:vasiliy@example.com"
+            className="inline-flex px-10 py-4 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity glow"
+          >
+            {t("Давайте создадим что-то значимое", "Let's build something impactful")}
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ContactSection;
