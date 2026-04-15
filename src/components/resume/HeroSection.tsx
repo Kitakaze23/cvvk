@@ -84,7 +84,7 @@ const HeroSection = () => {
             {t("Связаться", "Contact")}
           </a>
           <button
-            onClick={() => generateResumePDF(content, lang as "ru" | "en")}
+            onClick={() => { generateResumePDF(content, lang as "ru" | "en"); }}
             className="px-8 py-3.5 rounded-lg border border-border text-foreground font-medium text-sm hover:border-primary/50 hover:bg-secondary/50 transition-all inline-flex items-center gap-2 justify-center"
           >
             <Download className="w-4 h-4" />

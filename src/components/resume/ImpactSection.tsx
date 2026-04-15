@@ -1,9 +1,9 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
-import { TrendingUp, Users, Box, Layers, DollarSign, Zap } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { getIcon } from "@/utils/iconMap";
 
-const iconMap = [TrendingUp, Users, Box, Layers, DollarSign, Zap];
+const DEFAULT_ICONS = ["TrendingUp", "Users", "Box", "Layers", "DollarSign", "Zap"];
 const colorMap = ["text-emerald-400", "text-blue-400", "text-violet-400", "text-amber-400", "text-emerald-400", "text-primary"];
 
 const ImpactSection = () => {
@@ -12,12 +12,12 @@ const ImpactSection = () => {
   const { ref, inView } = useInView();
 
   const defaults = [
-    { value: "+57%", label_ru: "Рост MAU", label_en: "MAU Growth" },
-    { value: "18", label_ru: "Инженеров в команде", label_en: "Engineers in team" },
-    { value: "1500+", label_ru: "Пользователей продукта", label_en: "Product users" },
-    { value: "10+", label_ru: "Фич отправлено", label_en: "Features shipped" },
-    { value: "-27%", label_ru: "Снижение затрат", label_en: "Cost reduction" },
-    { value: "+42%", label_ru: "Рост эффективности", label_en: "Efficiency gain" },
+    { value: "+57%", label_ru: "Рост MAU", label_en: "MAU Growth", icon: "TrendingUp" },
+    { value: "18", label_ru: "Инженеров в команде", label_en: "Engineers in team", icon: "Users" },
+    { value: "1500+", label_ru: "Пользователей продукта", label_en: "Product users", icon: "Box" },
+    { value: "10+", label_ru: "Фич отправлено", label_en: "Features shipped", icon: "Layers" },
+    { value: "-27%", label_ru: "Снижение затрат", label_en: "Cost reduction", icon: "DollarSign" },
+    { value: "+42%", label_ru: "Рост эффективности", label_en: "Efficiency gain", icon: "Zap" },
   ];
 
   const metrics = content.impact?.metrics || defaults;
@@ -36,7 +36,7 @@ const ImpactSection = () => {
 
         <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {metrics.map((m: any, i: number) => {
-            const Icon = iconMap[i % iconMap.length];
+            const Icon = getIcon(m.icon || DEFAULT_ICONS[i % DEFAULT_ICONS.length]);
             const color = colorMap[i % colorMap.length];
             return (
               <div

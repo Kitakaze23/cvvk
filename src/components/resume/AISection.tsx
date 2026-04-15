@@ -1,9 +1,9 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
-import { Brain, Database, Sparkles, GitBranch } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { getIcon } from "@/utils/iconMap";
 
-const iconMap = [Brain, Database, Sparkles, GitBranch];
+const DEFAULT_ICONS = ["Brain", "Database", "Sparkles", "GitBranch"];
 
 const AISection = () => {
   const { t } = useLanguage();
@@ -11,10 +11,10 @@ const AISection = () => {
   const { ref, inView } = useInView();
 
   const defaults = [
-    { title_ru: "AI/LLM технологии", title_en: "Applied AI/LLM Technologies", desc_ru: "RAG, AI-агенты, обработка естественного языка", desc_en: "RAG, AI agents, natural language processing" },
-    { title_ru: "Data-driven аналитика", title_en: "Data-driven Analytics", desc_ru: "Построение аналитических платформ для 1500+ пользователей", desc_en: "Built analytics platforms for 1500+ users" },
-    { title_ru: "Автоматизация инсайтов", title_en: "Automated Insight Generation", desc_ru: "AI-генерация отчётов и рекомендаций", desc_en: "AI-powered reports and recommendations" },
-    { title_ru: "Decision workflows", title_en: "Decision-making Workflows", desc_ru: "Оптимизация процессов принятия решений через AI", desc_en: "AI-enhanced decision-making processes" },
+    { title_ru: "AI/LLM технологии", title_en: "Applied AI/LLM Technologies", desc_ru: "RAG, AI-агенты, обработка естественного языка", desc_en: "RAG, AI agents, natural language processing", icon: "Brain" },
+    { title_ru: "Data-driven аналитика", title_en: "Data-driven Analytics", desc_ru: "Построение аналитических платформ для 1500+ пользователей", desc_en: "Built analytics platforms for 1500+ users", icon: "Database" },
+    { title_ru: "Автоматизация инсайтов", title_en: "Automated Insight Generation", desc_ru: "AI-генерация отчётов и рекомендаций", desc_en: "AI-powered reports and recommendations", icon: "Sparkles" },
+    { title_ru: "Decision workflows", title_en: "Decision-making Workflows", desc_ru: "Оптимизация процессов принятия решений через AI", desc_en: "AI-enhanced decision-making processes", icon: "GitBranch" },
   ];
 
   const items = content.ai?.items || defaults;
@@ -34,7 +34,7 @@ const AISection = () => {
 
         <div ref={ref} className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {items.map((item: any, i: number) => {
-            const Icon = iconMap[i % iconMap.length];
+            const Icon = getIcon(item.icon || DEFAULT_ICONS[i % DEFAULT_ICONS.length]);
             return (
               <div
                 key={i}
