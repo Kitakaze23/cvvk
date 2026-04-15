@@ -1,16 +1,31 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import Navbar from "@/components/resume/Navbar";
+import HeroSection from "@/components/resume/HeroSection";
+import ImpactSection from "@/components/resume/ImpactSection";
+import AISection from "@/components/resume/AISection";
+import ExperienceSection from "@/components/resume/ExperienceSection";
+import SkillsSection from "@/components/resume/SkillsSection";
+import IndustriesSection from "@/components/resume/IndustriesSection";
+import VisionSection from "@/components/resume/VisionSection";
+import ContactSection from "@/components/resume/ContactSection";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
-  return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
-  );
-};
-
-const Index = PlaceholderIndex;
+const Index = () => (
+  <LanguageProvider>
+    <Navbar />
+    <main>
+      <HeroSection />
+      <ImpactSection />
+      <AISection />
+      <ExperienceSection />
+      <SkillsSection />
+      <IndustriesSection />
+      <VisionSection />
+      <ContactSection />
+    </main>
+    <footer className="py-8 text-center text-muted-foreground text-xs border-t border-border/30">
+      © {new Date().getFullYear()} Vasiliy Kolesnikov. All rights reserved.
+    </footer>
+  </LanguageProvider>
+);
 
 export default Index;
