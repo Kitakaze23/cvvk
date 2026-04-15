@@ -210,6 +210,8 @@ const Admin = () => {
   const experienceData = editData.experience || {};
   const skillsData = editData.skills || {};
   const industriesData = editData.industries || {};
+  const whatIBuildData = editData.what_i_build || {};
+  const projectsData = editData.projects || {};
 
   return (
     <div className="min-h-screen bg-background">
@@ -287,6 +289,25 @@ const Admin = () => {
           ))}
           <Button variant="outline" size="sm" onClick={() => addArrayItem("impact", "metrics", { value: "", label_ru: "", label_en: "" })}>
             <Plus className="w-3 h-3 mr-1" /> Добавить метрику
+          </Button>
+        </SectionEditor>
+
+        {/* WHAT I BUILD */}
+        <SectionEditor title="🚀 What I Build" section="what_i_build" saving={saving} onSave={saveSection}>
+          {whatIBuildData.items?.map((item: any, i: number) => (
+            <div key={i} className="glass rounded-lg p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground font-medium">Пункт {i + 1}</span>
+                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("what_i_build", "items", i)}>
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+              <Field label="Текст (RU)" value={item.text_ru} onChange={(v) => updateField("what_i_build", `items.${i}.text_ru`, v)} />
+              <Field label="Текст (EN)" value={item.text_en} onChange={(v) => updateField("what_i_build", `items.${i}.text_en`, v)} />
+            </div>
+          ))}
+          <Button variant="outline" size="sm" onClick={() => addArrayItem("what_i_build", "items", { text_ru: "", text_en: "" })}>
+            <Plus className="w-3 h-3 mr-1" /> Добавить пункт
           </Button>
         </SectionEditor>
 
@@ -422,6 +443,38 @@ const Admin = () => {
           ))}
           <Button variant="outline" size="sm" onClick={() => addArrayItem("industries", "items", { label_ru: "", label_en: "", icon: "Flame" })}>
             <Plus className="w-3 h-3 mr-1" /> Добавить индустрию
+          </Button>
+        </SectionEditor>
+
+        {/* PROJECTS */}
+        <SectionEditor title="📁 Selected Projects" section="projects" saving={saving} onSave={saveSection}>
+          {projectsData.items?.map((item: any, i: number) => (
+            <div key={i} className="glass rounded-lg p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground font-medium">Проект {i + 1}</span>
+                <Button variant="ghost" size="sm" onClick={() => removeArrayItem("projects", "items", i)}>
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+              <Field label="Название (RU)" value={item.title_ru} onChange={(v) => updateField("projects", `items.${i}.title_ru`, v)} />
+              <Field label="Название (EN)" value={item.title_en} onChange={(v) => updateField("projects", `items.${i}.title_en`, v)} />
+              <Field label="Описание (RU)" value={item.desc_ru} onChange={(v) => updateField("projects", `items.${i}.desc_ru`, v)} />
+              <Field label="Описание (EN)" value={item.desc_en} onChange={(v) => updateField("projects", `items.${i}.desc_en`, v)} />
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Статус</label>
+                <select
+                  value={item.status || "completed"}
+                  onChange={(e) => updateField("projects", `items.${i}.status`, e.target.value)}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+                >
+                  <option value="completed">Завершён</option>
+                  <option value="concept">Концепт</option>
+                </select>
+              </div>
+            </div>
+          ))}
+          <Button variant="outline" size="sm" onClick={() => addArrayItem("projects", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "", status: "completed" })}>
+            <Plus className="w-3 h-3 mr-1" /> Добавить проект
           </Button>
         </SectionEditor>
 
