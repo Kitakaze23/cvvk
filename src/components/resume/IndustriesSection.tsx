@@ -1,9 +1,14 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteContent } from "@/contexts/SiteContentContext";
-import { Flame, Building2, Brain, Leaf } from "lucide-react";
+import { Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import type { LucideIcon } from "lucide-react";
 
-const iconMap = [Flame, Building2, Brain, Leaf];
+const ICON_MAP: Record<string, LucideIcon> = {
+  Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network,
+};
+
+const DEFAULT_ICONS = ["Flame", "Building2", "Brain", "Leaf"];
 
 const IndustriesSection = () => {
   const { t } = useLanguage();
@@ -11,10 +16,10 @@ const IndustriesSection = () => {
   const { ref, inView } = useInView();
 
   const defaults = [
-    { label_ru: "Энергетика", label_en: "Energy" },
-    { label_ru: "Инфраструктура", label_en: "Infrastructure" },
-    { label_ru: "AI / Data", label_en: "AI / Data" },
-    { label_ru: "Climate Tech", label_en: "Climate Tech" },
+    { label_ru: "Энергетика", label_en: "Energy", icon: "Flame" },
+    { label_ru: "Инфраструктура", label_en: "Infrastructure", icon: "Building2" },
+    { label_ru: "AI / Data", label_en: "AI / Data", icon: "Brain" },
+    { label_ru: "Climate Tech", label_en: "Climate Tech", icon: "Leaf" },
   ];
 
   const industries = content.industries?.items || defaults;
@@ -30,7 +35,8 @@ const IndustriesSection = () => {
 
         <div ref={ref} className="flex flex-wrap justify-center gap-4 md:gap-6">
           {industries.map((ind: any, i: number) => {
-            const Icon = iconMap[i % iconMap.length];
+            const iconName = ind.icon || DEFAULT_ICONS[i % DEFAULT_ICONS.length];
+            const Icon = ICON_MAP[iconName] || Flame;
             return (
               <div
                 key={i}
