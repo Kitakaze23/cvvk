@@ -231,6 +231,41 @@ const Admin = () => {
       </header>
 
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
+        {/* SECTION VISIBILITY */}
+        <SectionEditor title="👁 Видимость секций" section="section_visibility" saving={saving} onSave={saveSection}>
+          {[
+            { key: "hero", label: "🏠 Hero" },
+            { key: "impact", label: "📊 Impact" },
+            { key: "what_i_build", label: "🚀 What I Build" },
+            { key: "ai", label: "🤖 AI Experience" },
+            { key: "experience", label: "💼 Experience" },
+            { key: "skills", label: "🧠 Skills" },
+            { key: "industries", label: "🌍 Industries" },
+            { key: "projects", label: "📁 Projects" },
+            { key: "contact", label: "📬 Contact" },
+          ].map(({ key, label }) => {
+            const vis = editData.section_visibility || {};
+            const isVisible = vis[key] !== false;
+            return (
+              <div key={key} className="flex items-center justify-between py-2">
+                <span className="text-sm font-medium">{label}</span>
+                <div className="flex items-center gap-2">
+                  {isVisible ? <Eye className="w-4 h-4 text-primary" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
+                  <Switch
+                    checked={isVisible}
+                    onCheckedChange={(checked) => {
+                      setEditData((prev) => ({
+                        ...prev,
+                        section_visibility: { ...(prev.section_visibility || {}), [key]: checked },
+                      }));
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </SectionEditor>
+
         {/* HERO */}
         <SectionEditor title="🏠 Hero" section="hero" saving={saving} onSave={saveSection}>
           {/* Avatar upload */}
