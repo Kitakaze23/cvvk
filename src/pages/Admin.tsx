@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { LogOut, Save, Plus, Trash2, Upload, Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network } from "lucide-react";
+import { LogOut, Save, Plus, Trash2, Upload, Flame, Building2, Brain, Leaf, Zap, Globe, Shield, Cpu, Rocket, Heart, Star, Target, TrendingUp, Database, Cloud, Factory, Gauge, BarChart3, Network, Eye, EyeOff } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import type { Session } from "@supabase/supabase-js";
 
 const AVAILABLE_ICONS = [
