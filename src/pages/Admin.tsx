@@ -322,12 +322,13 @@ const Admin = () => {
                     <span className="text-xs text-muted-foreground font-medium">Метрика {i + 1}</span>
                     <Button variant="ghost" size="sm" onClick={() => removeArrayItem("impact", "metrics", i)}><Trash2 className="w-3 h-3" /></Button>
                   </div>
+                  <IconPicker value={m.icon || ""} onChange={(v) => updateField("impact", `metrics.${i}.icon`, v)} />
                   <Field label="Значение" value={m.value} onChange={(v) => updateField("impact", `metrics.${i}.value`, v)} />
                   <Field label="Метка (RU)" value={m.label_ru} onChange={(v) => updateField("impact", `metrics.${i}.label_ru`, v)} />
                   <Field label="Метка (EN)" value={m.label_en} onChange={(v) => updateField("impact", `metrics.${i}.label_en`, v)} />
                 </div>
               ))}
-              <Button variant="outline" size="sm" onClick={() => addArrayItem("impact", "metrics", { value: "", label_ru: "", label_en: "" })}>
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("impact", "metrics", { value: "", label_ru: "", label_en: "", icon: "TrendingUp" })}>
                 <Plus className="w-3 h-3 mr-1" /> Добавить метрику
               </Button>
             </SectionEditor>
@@ -341,11 +342,12 @@ const Admin = () => {
                     <span className="text-xs text-muted-foreground font-medium">Пункт {i + 1}</span>
                     <Button variant="ghost" size="sm" onClick={() => removeArrayItem("what_i_build", "items", i)}><Trash2 className="w-3 h-3" /></Button>
                   </div>
+                  <IconPicker value={item.icon || ""} onChange={(v) => updateField("what_i_build", `items.${i}.icon`, v)} />
                   <Field label="Текст (RU)" value={item.text_ru} onChange={(v) => updateField("what_i_build", `items.${i}.text_ru`, v)} />
                   <Field label="Текст (EN)" value={item.text_en} onChange={(v) => updateField("what_i_build", `items.${i}.text_en`, v)} />
                 </div>
               ))}
-              <Button variant="outline" size="sm" onClick={() => addArrayItem("what_i_build", "items", { text_ru: "", text_en: "" })}>
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("what_i_build", "items", { text_ru: "", text_en: "", icon: "Rocket" })}>
                 <Plus className="w-3 h-3 mr-1" /> Добавить пункт
               </Button>
             </SectionEditor>
@@ -359,13 +361,14 @@ const Admin = () => {
                     <span className="text-xs text-muted-foreground font-medium">AI блок {i + 1}</span>
                     <Button variant="ghost" size="sm" onClick={() => removeArrayItem("ai", "items", i)}><Trash2 className="w-3 h-3" /></Button>
                   </div>
+                  <IconPicker value={item.icon || ""} onChange={(v) => updateField("ai", `items.${i}.icon`, v)} />
                   <Field label="Заголовок (RU)" value={item.title_ru} onChange={(v) => updateField("ai", `items.${i}.title_ru`, v)} />
                   <Field label="Заголовок (EN)" value={item.title_en} onChange={(v) => updateField("ai", `items.${i}.title_en`, v)} />
                   <Field label="Описание (RU)" value={item.desc_ru} onChange={(v) => updateField("ai", `items.${i}.desc_ru`, v)} />
                   <Field label="Описание (EN)" value={item.desc_en} onChange={(v) => updateField("ai", `items.${i}.desc_en`, v)} />
                 </div>
               ))}
-              <Button variant="outline" size="sm" onClick={() => addArrayItem("ai", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "" })}>
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("ai", "items", { title_ru: "", title_en: "", desc_ru: "", desc_en: "", icon: "Brain" })}>
                 <Plus className="w-3 h-3 mr-1" /> Добавить блок
               </Button>
             </SectionEditor>
