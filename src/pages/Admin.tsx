@@ -110,12 +110,17 @@ const Admin = () => {
   const addArrayItem = (section: string, path: string, template: any) => {
     setEditData((prev) => {
       const copy = JSON.parse(JSON.stringify(prev));
+      if (!copy[section]) copy[section] = {};
       const keys = path.split(".");
       let obj = copy[section];
-      for (const key of keys) {
-        obj = obj[isNaN(Number(key)) ? key : Number(key)];
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = isNaN(Number(keys[i])) ? keys[i] : Number(keys[i]);
+        if (!obj[key]) obj[key] = {};
+        obj = obj[key];
       }
-      obj.push(template);
+      const lastKey = keys[keys.length - 1];
+      if (!Array.isArray(obj[lastKey])) obj[lastKey] = [];
+      obj[lastKey].push(template);
       return copy;
     });
   };
