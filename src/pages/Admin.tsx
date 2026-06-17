@@ -409,6 +409,51 @@ const Admin = () => {
             </SectionEditor>
           )}
 
+          {activeSection === "education" && (
+            <SectionEditor title="🎓 Education" section="education" saving={saving} onSave={saveSection}>
+              <div className="text-xs text-muted-foreground font-medium mt-2">Образование</div>
+              {educationData.items?.map((it: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">Запись {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("education", "items", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Учреждение (RU)" value={it.institution_ru} onChange={(v) => updateField("education", `items.${i}.institution_ru`, v)} />
+                  <Field label="Учреждение (EN)" value={it.institution_en} onChange={(v) => updateField("education", `items.${i}.institution_en`, v)} />
+                  <Field label="Степень / Специальность (RU)" value={it.degree_ru} onChange={(v) => updateField("education", `items.${i}.degree_ru`, v)} />
+                  <Field label="Степень / Специальность (EN)" value={it.degree_en} onChange={(v) => updateField("education", `items.${i}.degree_en`, v)} />
+                  <Field label="Период (RU)" value={it.period_ru} onChange={(v) => updateField("education", `items.${i}.period_ru`, v)} />
+                  <Field label="Период (EN)" value={it.period_en} onChange={(v) => updateField("education", `items.${i}.period_en`, v)} />
+                  <FieldTextarea label="Описание (RU)" value={it.description_ru} onChange={(v) => updateField("education", `items.${i}.description_ru`, v)} />
+                  <FieldTextarea label="Описание (EN)" value={it.description_en} onChange={(v) => updateField("education", `items.${i}.description_en`, v)} />
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("education", "items", { institution_ru: "", institution_en: "", degree_ru: "", degree_en: "", period_ru: "", period_en: "", description_ru: "", description_en: "" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить образование
+              </Button>
+
+              <div className="text-xs text-muted-foreground font-medium mt-6">Курсы и сертификаты</div>
+              {educationData.courses?.map((c: any, i: number) => (
+                <div key={i} className="glass rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-medium">Курс {i + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("education", "courses", i)}><Trash2 className="w-3 h-3" /></Button>
+                  </div>
+                  <Field label="Название (RU)" value={c.title_ru} onChange={(v) => updateField("education", `courses.${i}.title_ru`, v)} />
+                  <Field label="Название (EN)" value={c.title_en} onChange={(v) => updateField("education", `courses.${i}.title_en`, v)} />
+                  <Field label="Провайдер" value={c.provider} onChange={(v) => updateField("education", `courses.${i}.provider`, v)} />
+                  <Field label="Год" value={c.year} onChange={(v) => updateField("education", `courses.${i}.year`, v)} />
+                  <Field label="Ссылка (URL)" value={c.url} onChange={(v) => updateField("education", `courses.${i}.url`, v)} />
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem("education", "courses", { title_ru: "", title_en: "", provider: "", year: "", url: "" })}>
+                <Plus className="w-3 h-3 mr-1" /> Добавить курс
+              </Button>
+            </SectionEditor>
+          )}
+
+
+
           {activeSection === "skills" && (
             <SectionEditor title="🧠 Skills" section="skills" saving={saving} onSave={saveSection}>
               {skillsData.groups?.map((g: any, i: number) => (
