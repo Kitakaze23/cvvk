@@ -147,8 +147,23 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
   const PADDING_X = 50;
   const PADDING_Y = 40;
   const container = document.createElement("div");
-  container.style.cssText = `position:fixed;left:-9999px;top:0;width:${CONTENT_WIDTH_PX}px;padding:${PADDING_Y}px ${PADDING_X}px;background:#fff;font-family:'Inter','Segoe UI',system-ui,sans-serif;color:#1a1a1a;line-height:1.5;word-wrap:break-word;overflow-wrap:break-word;box-sizing:border-box`;
+  container.style.cssText = `position:fixed;left:-9999px;top:0;width:${CONTENT_WIDTH_PX}px;padding:${PADDING_Y}px ${PADDING_X}px;background:#fff;font-family:'Inter','Segoe UI',system-ui,sans-serif;color:#1a1a1a;line-height:1.5;word-wrap:break-word;overflow-wrap:anywhere;box-sizing:border-box`;
   container.innerHTML = blocks.join("");
+  const style = document.createElement("style");
+  style.textContent = `
+    [data-pdf-block], [data-pdf-block] * {
+      box-sizing: border-box;
+      max-width: 100%;
+      white-space: normal;
+    }
+
+    [data-pdf-block] {
+      width: 100%;
+      overflow: visible;
+      padding-bottom: 2px;
+    }
+  `;
+  container.prepend(style);
   document.body.appendChild(container);
 
   try {
@@ -165,7 +180,15 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
     let cursorY = marginMm;
 
     for (const el of blockEls) {
-      const canvas = await html2canvas(el, { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" });
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+        width: el.scrollWidth,
+        height: el.scrollHeight + 4,
+        windowWidth: container.scrollWidth,
+      });
       const imgWidth = usableWidthMm;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const imgData = canvas.toDataURL("image/png");
