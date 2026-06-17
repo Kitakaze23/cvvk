@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2 } from "lucide-react";
+import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2, GraduationCap } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import IconPicker from "@/components/resume/IconPicker";
 import type { Session } from "@supabase/supabase-js";
@@ -17,6 +17,7 @@ const ADMIN_SECTIONS = [
   { key: "what_i_build", label: "🚀 What I Build", icon: Rocket },
   { key: "ai", label: "🤖 AI", icon: Brain },
   { key: "experience", label: "💼 Experience", icon: Building2 },
+  { key: "education", label: "🎓 Education", icon: GraduationCap },
   { key: "skills", label: "🧠 Skills", icon: Brain },
   { key: "industries", label: "🌍 Industries", icon: Globe },
   { key: "projects", label: "📁 Projects", icon: Star },
@@ -207,6 +208,7 @@ const Admin = () => {
   const industriesData = editData.industries || {};
   const whatIBuildData = editData.what_i_build || {};
   const projectsData = editData.projects || {};
+  const educationData = editData.education || {};
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -255,6 +257,7 @@ const Admin = () => {
                 { key: "what_i_build", label: "🚀 What I Build" },
                 { key: "ai", label: "🤖 AI Experience" },
                 { key: "experience", label: "💼 Experience" },
+                { key: "education", label: "🎓 Education" },
                 { key: "skills", label: "🧠 Skills" },
                 { key: "industries", label: "🌍 Industries" },
                 { key: "projects", label: "📁 Projects" },
