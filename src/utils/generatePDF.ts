@@ -41,7 +41,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
   if (contact.phone_display) parts.push(contact.phone_display);
   if (contact.linkedin_url) parts.push(contact.linkedin_url);
   if (parts.length) {
-    blocks.push(`<div data-pdf-block style="text-align:center;font-size:10px;color:#777;margin-bottom:16px">${parts.join("  |  ")}</div>`);
+    blocks.push(`<div data-pdf-block style="text-align:center;font-size:10px;color:#777;margin-bottom:16px;overflow-wrap:anywhere;word-break:normal">${parts.join("  |  ")}</div>`);
   }
 
   blocks.push(divider());
@@ -66,11 +66,11 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
       const bulletsHtml = bullets
         ? bullets
             .filter((b: string) => String(b).trim().length > 0)
-            .map((b: string) => `<div style="font-size:10px;color:#444;padding-left:10px;margin-bottom:2px">• ${b}</div>`)
+            .map((b: string) => `<div style="display:grid;grid-template-columns:10px minmax(0,1fr);gap:0;font-size:10px;line-height:1.55;color:#444;margin-bottom:3px;overflow-wrap:anywhere"><span>•</span><span>${b}</span></div>`)
             .join("")
         : "";
       blocks.push(wrapBlock(`
-        <div style="margin-bottom:10px;word-wrap:break-word;overflow-wrap:break-word">
+        <div style="margin-bottom:10px;word-wrap:break-word;overflow-wrap:anywhere">
           <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px">
             <strong style="font-size:13px;flex:1 1 auto;min-width:0">${companyName}</strong>
             <span style="font-size:10px;color:#999;flex-shrink:0">${t(item.period_ru, item.period_en)}</span>
@@ -99,7 +99,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
     blocks.push(wrapBlock(sectionTitle(t("НАВЫКИ", "SKILLS"))));
     groups.forEach((g: any) => {
       const skills: string[] | undefined = pick(lang, g.skills_ru, g.skills_en) as any;
-      blocks.push(wrapBlock(`<div style="margin-bottom:5px"><strong style="font-size:12px">${g.title}</strong><div style="font-size:10px;color:#666">${skills ? skills.join("  •  ") : ""}</div></div>`));
+       blocks.push(wrapBlock(`<div style="margin-bottom:5px;overflow-wrap:anywhere"><strong style="font-size:12px">${g.title}</strong><div style="font-size:10px;line-height:1.55;color:#666">${skills ? skills.join("  •  ") : ""}</div></div>`));
     });
     blocks.push(divider());
   }
@@ -111,7 +111,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
     blocks.push(wrapBlock(sectionTitle(t("ОБРАЗОВАНИЕ", "EDUCATION"))));
     eduItems.forEach((item: any) => {
       blocks.push(wrapBlock(`
-        <div style="margin-bottom:8px;word-wrap:break-word;overflow-wrap:break-word">
+        <div style="margin-bottom:8px;word-wrap:break-word;overflow-wrap:anywhere">
           <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px">
             <strong style="font-size:12px;flex:1 1 auto;min-width:0">${t(item.institution_ru, item.institution_en)}</strong>
             <span style="font-size:10px;color:#999;flex-shrink:0">${t(item.period_ru || "", item.period_en || "")}</span>
@@ -124,7 +124,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
     if (courses.length) {
       blocks.push(wrapBlock(`<div style="font-size:11px;font-weight:600;margin:6px 0 4px">${t("Курсы и сертификаты", "Courses & Certifications")}</div>`));
       courses.forEach((c: any) => {
-        blocks.push(wrapBlock(`<div style="font-size:10px;color:#555;margin-bottom:2px">• ${t(c.title_ru, c.title_en)}${c.provider ? ` — ${c.provider}` : ""}${c.year ? ` (${c.year})` : ""}</div>`));
+        blocks.push(wrapBlock(`<div style="display:grid;grid-template-columns:10px minmax(0,1fr);font-size:10px;line-height:1.55;color:#555;margin-bottom:3px;overflow-wrap:anywhere"><span>•</span><span>${t(c.title_ru, c.title_en)}${c.provider ? ` — ${c.provider}` : ""}${c.year ? ` (${c.year})` : ""}</span></div>`));
       });
     }
     blocks.push(divider());
@@ -135,7 +135,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
   if (industries.length) {
     blocks.push(wrapBlock(
       sectionTitle(t("ИНДУСТРИИ", "INDUSTRIES")) +
-      `<div style="font-size:11px;color:#555">${industries.map((ind: any) => t(ind.label_ru, ind.label_en)).join("  •  ")}</div>`
+      `<div style="font-size:11px;line-height:1.55;color:#555;overflow-wrap:anywhere">${industries.map((ind: any) => t(ind.label_ru, ind.label_en)).join("  •  ")}</div>`
     ));
   }
 
