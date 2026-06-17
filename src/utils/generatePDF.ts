@@ -70,10 +70,10 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
             .join("")
         : "";
       blocks.push(wrapBlock(`
-        <div style="margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline">
-            <strong style="font-size:13px">${companyName}</strong>
-            <span style="font-size:10px;color:#999">${t(item.period_ru, item.period_en)}</span>
+        <div style="margin-bottom:10px;word-wrap:break-word;overflow-wrap:break-word">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px">
+            <strong style="font-size:13px;flex:1 1 auto;min-width:0">${companyName}</strong>
+            <span style="font-size:10px;color:#999;flex-shrink:0">${t(item.period_ru, item.period_en)}</span>
           </div>
           <div style="font-size:11px;color:#666;margin-bottom:3px">${t(item.role_ru, item.role_en)}</div>
           ${bulletsHtml}
@@ -111,10 +111,10 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
     blocks.push(wrapBlock(sectionTitle(t("ОБРАЗОВАНИЕ", "EDUCATION"))));
     eduItems.forEach((item: any) => {
       blocks.push(wrapBlock(`
-        <div style="margin-bottom:8px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline">
-            <strong style="font-size:12px">${t(item.institution_ru, item.institution_en)}</strong>
-            <span style="font-size:10px;color:#999">${t(item.period_ru || "", item.period_en || "")}</span>
+        <div style="margin-bottom:8px;word-wrap:break-word;overflow-wrap:break-word">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px">
+            <strong style="font-size:12px;flex:1 1 auto;min-width:0">${t(item.institution_ru, item.institution_en)}</strong>
+            <span style="font-size:10px;color:#999;flex-shrink:0">${t(item.period_ru || "", item.period_en || "")}</span>
           </div>
           <div style="font-size:11px;color:#666">${t(item.degree_ru || "", item.degree_en || "")}</div>
           ${item.description_ru || item.description_en ? `<div style="font-size:10px;color:#777;margin-top:2px">${t(item.description_ru || "", item.description_en || "")}</div>` : ""}
@@ -147,7 +147,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
   const PADDING_X = 50;
   const PADDING_Y = 40;
   const container = document.createElement("div");
-  container.style.cssText = `position:fixed;left:-9999px;top:0;width:${CONTENT_WIDTH_PX}px;padding:${PADDING_Y}px ${PADDING_X}px;background:#fff;font-family:'Inter','Segoe UI',system-ui,sans-serif;color:#1a1a1a;line-height:1.5`;
+  container.style.cssText = `position:fixed;left:-9999px;top:0;width:${CONTENT_WIDTH_PX}px;padding:${PADDING_Y}px ${PADDING_X}px;background:#fff;font-family:'Inter','Segoe UI',system-ui,sans-serif;color:#1a1a1a;line-height:1.5;word-wrap:break-word;overflow-wrap:break-word;box-sizing:border-box`;
   container.innerHTML = blocks.join("");
   document.body.appendChild(container);
 
