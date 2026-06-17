@@ -11,9 +11,38 @@ const EducationSection = () => {
   const { ref, inView } = useInView(0);
   const [open, setOpen] = useState(false);
 
+  const defaults = {
+    items: [
+      {
+        institution_ru: "МГУ имени М.В. Ломоносова",
+        institution_en: "Lomonosov Moscow State University",
+        degree_ru: "Инженер геокриолог",
+        degree_en: "Geocryology Engineer",
+        period_ru: "2003-2009",
+        period_en: "2003-2009",
+      },
+      {
+        institution_ru: "ГАСИС",
+        institution_en: "GASIS",
+        degree_ru: "Финансовый менеджмент",
+        degree_en: "Financial Management",
+        period_ru: "2010-2012",
+        period_en: "2010-2012",
+      },
+    ],
+    courses: [
+      { title_ru: "DNV – Risk Assessment Techniques based on IEC/ISO 31010:2009", title_en: "DNV – Risk Assessment Techniques based on IEC/ISO 31010:2009" },
+      { title_ru: "DNV – Enterprise Risk Management based on ISO 31000:2009", title_en: "DNV – Enterprise Risk Management based on ISO 31000:2009" },
+      { title_ru: "ISO 14001", title_en: "ISO 14001" },
+      { title_ru: "Integrated management system ISO 14001, OHSAS 18001. Internal auditor ISO 9001. Risk assessment.", title_en: "Integrated management system ISO 14001, OHSAS 18001. Internal auditor ISO 9001. Risk assessment." },
+      { title_ru: "Quality management. ISO 9001&GOST PB 0015-002-2012", title_en: "Quality management. ISO 9001&GOST PB 0015-002-2012" },
+      { title_ru: "Development of Production Processes in the Company. Working out of oil- gas deposits. Oil refining. Modern Technologies.", title_en: "Development of Production Processes in the Company. Working out of oil- gas deposits. Oil refining. Modern Technologies." },
+    ],
+  };
+
   const data = content.education || {};
-  const items: any[] = data.items || [];
-  const courses: any[] = data.courses || [];
+  const items: any[] = data.items?.length ? data.items : defaults.items;
+  const courses: any[] = data.courses?.length ? data.courses : defaults.courses;
 
   if (!items.length && !courses.length) return null;
 
