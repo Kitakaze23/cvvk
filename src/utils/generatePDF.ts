@@ -72,7 +72,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
       `);
       const bullets: string[] | undefined = pick(lang, item.items_ru, item.items_en) as any;
       if (bullets) {
-        bullets.forEach((b: string) => {
+        bullets.filter((b: string) => String(b).trim().length > 0).forEach((b: string) => {
           sections.push(`<div style="font-size:10px;color:#444;padding-left:10px;margin-bottom:2px">• ${b}</div>`);
         });
       }
