@@ -70,10 +70,10 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
             .join("")
         : "";
       blocks.push(wrapBlock(`
-        <div style="margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline">
-            <strong style="font-size:13px">${companyName}</strong>
-            <span style="font-size:10px;color:#999">${t(item.period_ru, item.period_en)}</span>
+        <div style="margin-bottom:10px;word-wrap:break-word;overflow-wrap:break-word">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px">
+            <strong style="font-size:13px;flex:1 1 auto;min-width:0">${companyName}</strong>
+            <span style="font-size:10px;color:#999;flex-shrink:0">${t(item.period_ru, item.period_en)}</span>
           </div>
           <div style="font-size:11px;color:#666;margin-bottom:3px">${t(item.role_ru, item.role_en)}</div>
           ${bulletsHtml}
