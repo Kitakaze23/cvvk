@@ -8,7 +8,7 @@ import { ChevronDown, GraduationCap, BookOpen, ExternalLink } from "lucide-react
 const EducationSection = () => {
   const { t } = useLanguage();
   const { content } = useSiteContent();
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView(0);
   const [open, setOpen] = useState(false);
 
   const data = content.education || {};
