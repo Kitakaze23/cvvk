@@ -158,9 +158,10 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
     }
 
     [data-pdf-block] {
+      display: flow-root;
       width: 100%;
       overflow: visible;
-      padding-bottom: 2px;
+      padding: 2px 0 4px;
     }
   `;
   container.prepend(style);
