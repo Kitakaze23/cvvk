@@ -6,6 +6,7 @@ import ImpactSection from "@/components/resume/ImpactSection";
 import WhatIBuildSection from "@/components/resume/WhatIBuildSection";
 import AISection from "@/components/resume/AISection";
 import ExperienceSection from "@/components/resume/ExperienceSection";
+import EducationSection from "@/components/resume/EducationSection";
 import SkillsSection from "@/components/resume/SkillsSection";
 import IndustriesSection from "@/components/resume/IndustriesSection";
 import ProjectsSection from "@/components/resume/ProjectsSection";
@@ -17,6 +18,7 @@ const SECTIONS = [
   { key: "what_i_build", Component: WhatIBuildSection },
   { key: "ai", Component: AISection },
   { key: "experience", Component: ExperienceSection },
+  { key: "education", Component: EducationSection },
   { key: "skills", Component: SkillsSection },
   { key: "industries", Component: IndustriesSection },
   { key: "projects", Component: ProjectsSection },
