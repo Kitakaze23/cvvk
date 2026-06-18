@@ -218,7 +218,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
           ctx.drawImage(canvas, 0, sourceY, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
-          pdf.addImage(sliceCanvas.toDataURL("image/png"), "PNG", marginMm, marginMm, imgWidth, sliceHeightMm);
+          pdf.addImage(sliceCanvas.toDataURL("image/jpeg", 0.9), "JPEG", marginMm, marginMm, imgWidth, sliceHeightMm);
           sourceY += sliceHeightPx;
           remaining -= sliceHeightMm;
           if (remaining > 0) {
