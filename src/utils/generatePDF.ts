@@ -23,6 +23,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
 
   // Each block is rendered separately so we can paginate without cutting it.
   const blocks: string[] = [];
+  const dash = (s: string) => String(s ?? "").replace(/[—–−]/g, "-");
 
   // Header
   blocks.push(`
