@@ -153,7 +153,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
   const PADDING_Y = 40;
   const container = document.createElement("div");
   container.style.cssText = `position:fixed;left:-9999px;top:0;width:${CONTENT_WIDTH_PX}px;padding:${PADDING_Y}px ${PADDING_X}px;background:#fff;font-family:'Inter','Segoe UI',system-ui,sans-serif;color:#1a1a1a;line-height:1.5;word-wrap:break-word;overflow-wrap:anywhere;box-sizing:border-box`;
-  container.innerHTML = blocks.join("");
+  container.innerHTML = dash(blocks.join(""));
   const style = document.createElement("style");
   style.textContent = `
     [data-pdf-block], [data-pdf-block] * {
