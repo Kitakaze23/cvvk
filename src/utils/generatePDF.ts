@@ -196,7 +196,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
       });
       const imgWidth = usableWidthMm;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const imgData = canvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
       if (imgHeight > usableHeightMm) {
         // Block taller than a full page: slice it across pages.
@@ -218,7 +218,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
           ctx.drawImage(canvas, 0, sourceY, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
-          pdf.addImage(sliceCanvas.toDataURL("image/png"), "PNG", marginMm, marginMm, imgWidth, sliceHeightMm);
+          pdf.addImage(sliceCanvas.toDataURL("image/jpeg", 0.9), "JPEG", marginMm, marginMm, imgWidth, sliceHeightMm);
           sourceY += sliceHeightPx;
           remaining -= sliceHeightMm;
           if (remaining > 0) {
@@ -235,7 +235,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
         pdf.addPage();
         cursorY = marginMm;
       }
-      pdf.addImage(imgData, "PNG", marginMm, cursorY, imgWidth, imgHeight);
+      pdf.addImage(imgData, "JPEG", marginMm, cursorY, imgWidth, imgHeight);
       cursorY += imgHeight;
     }
 
