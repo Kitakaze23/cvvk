@@ -235,7 +235,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
         pdf.addPage();
         cursorY = marginMm;
       }
-      pdf.addImage(imgData, "PNG", marginMm, cursorY, imgWidth, imgHeight);
+      pdf.addImage(imgData, "JPEG", marginMm, cursorY, imgWidth, imgHeight);
       cursorY += imgHeight;
     }
 
