@@ -31,7 +31,7 @@ const ExperienceSection = () => {
   ];
 
   const timeline = content.experience?.timeline || defaults;
-  const cleanPoints = (points: unknown) => (Array.isArray(points) ? points.filter((point) => String(point).trim().length > 0) : []);
+  const cleanPoints = (points: unknown) => (Array.isArray(points) ? points : []);
 
   return (
     <section id="experience" className="py-32 relative">
