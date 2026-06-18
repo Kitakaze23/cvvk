@@ -31,7 +31,7 @@ const ExperienceSection = () => {
   ];
 
   const timeline = content.experience?.timeline || defaults;
-  const cleanPoints = (points: unknown) => (Array.isArray(points) ? points.filter((point) => String(point).trim().length > 0) : []);
+  const cleanPoints = (points: unknown) => (Array.isArray(points) ? points : []);
 
   return (
     <section id="experience" className="py-32 relative">
@@ -78,12 +78,18 @@ const ExperienceSection = () => {
                       <span className="text-muted-foreground text-sm mt-1 md:mt-0">{t(item.period_ru, item.period_en)}</span>
                     </div>
                     <ul className="space-y-2">
-                      {cleanPoints(t(item.items_ru, item.items_en)).map((point: string, j: number) => (
-                        <li key={j} className="text-muted-foreground text-sm flex items-start gap-2">
-                          <span className="w-1 h-1 rounded-full bg-primary mt-2 shrink-0" />
-                          {point}
-                        </li>
-                      ))}
+                      {cleanPoints(t(item.items_ru, item.items_en)).map((point: string, j: number) => {
+                        const isEmpty = String(point).trim().length === 0;
+                        if (isEmpty) {
+                          return <li key={j} className="h-4 list-none" aria-hidden="true">&nbsp;</li>;
+                        }
+                        return (
+                          <li key={j} className="text-muted-foreground text-sm flex items-start gap-2">
+                            <span className="w-1 h-1 rounded-full bg-primary mt-2 shrink-0" />
+                            {point}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 </div>

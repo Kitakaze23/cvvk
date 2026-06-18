@@ -65,8 +65,12 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
       const bullets: string[] | undefined = pick(lang, item.items_ru, item.items_en) as any;
       const bulletsHtml = bullets
         ? bullets
-            .filter((b: string) => String(b).trim().length > 0)
-            .map((b: string) => `<div style="display:grid;grid-template-columns:10px minmax(0,1fr);gap:0;font-size:10px;line-height:1.55;color:#444;margin-bottom:3px;overflow-wrap:anywhere"><span>•</span><span>${b}</span></div>`)
+            .map((b: string) => {
+              if (String(b).trim().length === 0) {
+                return `<div style="font-size:10px;line-height:1.55;height:14px">&nbsp;</div>`;
+              }
+              return `<div style="display:grid;grid-template-columns:10px minmax(0,1fr);gap:0;font-size:10px;line-height:1.55;color:#444;margin-bottom:3px;overflow-wrap:anywhere"><span>•</span><span>${b}</span></div>`;
+            })
             .join("")
         : "";
       blocks.push(wrapBlock(`
