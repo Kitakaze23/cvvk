@@ -196,7 +196,7 @@ export const generateResumePDF = async (content: SiteContent, lang: Lang) => {
       });
       const imgWidth = usableWidthMm;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const imgData = canvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
       if (imgHeight > usableHeightMm) {
         // Block taller than a full page: slice it across pages.
