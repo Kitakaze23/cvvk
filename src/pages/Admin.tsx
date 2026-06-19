@@ -138,6 +138,22 @@ const Admin = () => {
     });
   };
 
+  const moveArrayItem = (section: string, path: string, index: number, direction: -1 | 1) => {
+    setEditData((prev) => {
+      const copy = JSON.parse(JSON.stringify(prev));
+      const keys = path.split(".");
+      let obj = copy[section];
+      for (const key of keys) {
+        obj = obj[isNaN(Number(key)) ? key : Number(key)];
+      }
+      const newIndex = index + direction;
+      if (!Array.isArray(obj) || newIndex < 0 || newIndex >= obj.length) return prev;
+      const [item] = obj.splice(index, 1);
+      obj.splice(newIndex, 0, item);
+      return copy;
+    });
+  };
+
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
