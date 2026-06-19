@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2, GraduationCap } from "lucide-react";
+import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2, GraduationCap, ArrowUp, ArrowDown } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import IconPicker from "@/components/resume/IconPicker";
 import type { Session } from "@supabase/supabase-js";
