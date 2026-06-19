@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2, GraduationCap } from "lucide-react";
+import { LogOut, Save, Plus, Trash2, Upload, Eye, EyeOff, Rocket, BarChart3, Brain, Globe, Star, Target, Heart, Building2, GraduationCap, ArrowUp, ArrowDown } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import IconPicker from "@/components/resume/IconPicker";
 import type { Session } from "@supabase/supabase-js";
@@ -134,6 +134,22 @@ const Admin = () => {
         obj = obj[isNaN(Number(key)) ? key : Number(key)];
       }
       obj.splice(index, 1);
+      return copy;
+    });
+  };
+
+  const moveArrayItem = (section: string, path: string, index: number, direction: -1 | 1) => {
+    setEditData((prev) => {
+      const copy = JSON.parse(JSON.stringify(prev));
+      const keys = path.split(".");
+      let obj = copy[section];
+      for (const key of keys) {
+        obj = obj[isNaN(Number(key)) ? key : Number(key)];
+      }
+      const newIndex = index + direction;
+      if (!Array.isArray(obj) || newIndex < 0 || newIndex >= obj.length) return prev;
+      const [item] = obj.splice(index, 1);
+      obj.splice(newIndex, 0, item);
       return copy;
     });
   };
@@ -388,7 +404,11 @@ const Admin = () => {
                 <div key={i} className="glass rounded-lg p-4 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground font-medium">{t.company || t.company_ru || `Позиция ${i + 1}`}</span>
-                    <Button variant="ghost" size="sm" onClick={() => removeArrayItem("experience", "timeline", i)}><Trash2 className="w-3 h-3" /></Button>
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => moveArrayItem("experience", "timeline", i, -1)} title="Переместить выше"><ArrowUp className="w-3 h-3" /></Button>
+                      <Button variant="ghost" size="sm" disabled={i === (experienceData.timeline?.length || 0) - 1} onClick={() => moveArrayItem("experience", "timeline", i, 1)} title="Переместить ниже"><ArrowDown className="w-3 h-3" /></Button>
+                      <Button variant="ghost" size="sm" onClick={() => removeArrayItem("experience", "timeline", i)}><Trash2 className="w-3 h-3" /></Button>
+                    </div>
                   </div>
                   <Field label="Компания" value={t.company || ""} onChange={(v) => updateField("experience", `timeline.${i}.company`, v)} />
                   <Field label="Компания (RU)" value={t.company_ru || ""} onChange={(v) => updateField("experience", `timeline.${i}.company_ru`, v)} />
